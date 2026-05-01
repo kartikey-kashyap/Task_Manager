@@ -43,7 +43,7 @@ exports.addMember = async (req, res) => {
     const { userId } = req.body;
     const project = await Project.findById(req.params.id);
     if (!project) return res.status(404).json({ message: 'Project not found' });
-    if (!project.members.includes(userId)) {
+    if (!project.members.some(m => m.toString() === userId)) {
       project.members.push(userId);
       await project.save();
     }
@@ -68,12 +68,13 @@ exports.removeMember = async (req, res) => {
 
 exports.updateProject = async (req, res) => {
   try {
-    const { name, description } = req.body;
+    const { name, description, members } = req.body;
     const project = await Project.findById(req.params.id);
     if (!project) return res.status(404).json({ message: 'Project not found' });
     
     project.name = name || project.name;
     project.description = description !== undefined ? description : project.description;
+    if (members) project.members = members;
     await project.save();
     
     res.json(project);

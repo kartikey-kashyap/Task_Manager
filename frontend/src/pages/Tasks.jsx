@@ -79,6 +79,7 @@ export default function Tasks() {
   };
 
   const handleDeleteTask = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this task?')) return;
     try {
       await api.delete(`/tasks/${id}`);
       fetchTasks();

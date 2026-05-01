@@ -42,7 +42,7 @@ export default function Signup() {
               />
             </div>
             <div className="form-group">
-              <label>Username</label>
+              <label>Email</label>
               <input 
                 type="email" 
                 className="form-control"

@@ -59,7 +59,18 @@ exports.updateTask = async (req, res) => {
       if (description !== undefined) task.description = description;
       if (priority) task.priority = priority;
       if (dueDate !== undefined) task.dueDate = dueDate;
-      if (assignedTo !== undefined) task.assignedTo = assignedTo;
+      
+      if (assignedTo !== undefined) {
+        const newAssignedTo = assignedTo === '' ? null : assignedTo;
+        if (newAssignedTo && (!task.assignedTo || task.assignedTo.toString() !== newAssignedTo.toString())) {
+          await Notification.create({
+            userId: newAssignedTo,
+            message: `You have been assigned a task: ${task.title}`
+          });
+        }
+        task.assignedTo = newAssignedTo;
+      }
+
       if (status) task.status = status;
       if (projectId) task.projectId = projectId;
     }
