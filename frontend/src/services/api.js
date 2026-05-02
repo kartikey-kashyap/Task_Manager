@@ -1,7 +1,10 @@
 import axios from 'axios';
 
+const API_URL = (import.meta.env.VITE_API_URL || 'https://taskmanager-production-a6f0.up.railway.app')
+  .replace(/\/$/, '');
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL ? `${import.meta.env.VITE_API_URL}/api` : 'http://localhost:5000/api',
+  baseURL: `${API_URL}/api`,
 });
 
 api.interceptors.request.use(
